@@ -42,9 +42,9 @@ public class Fragment1 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment1_layout, container, false);
 
-
-        search_name = (EditText)getActivity().findViewById(R.id.insert_name);
-        Button btn_search = (Button)getActivity().findViewById(R.id.btn_search);
+        /*
+        search_name = (EditText) view.findViewById(R.id.insert_name);
+        Button btn_search = (Button)view.findViewById(R.id.btn_search);
         btn_search.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View view){
                 String s_name = search_name.getText().toString();
@@ -65,6 +65,8 @@ public class Fragment1 extends Fragment {
 
             }
         });
+
+         */
 
 
         //adapter contact list

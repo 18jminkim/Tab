@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> implements Filterable  {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
 
     // adapter에 들어갈 list 입니다.
     private ArrayList<Number> listData = new ArrayList<>();
@@ -51,12 +51,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         listData.add(data);
     }
 
-    public Filter getFilter(){
-        return exampleFilter;
-    }
-    private Filter exampleFilter = new Filter(){
-
-    }
 
 
     // RecyclerView의 핵심인 ViewHolder 입니다.
