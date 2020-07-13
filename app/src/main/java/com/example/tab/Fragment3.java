@@ -8,9 +8,11 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,17 +22,30 @@ import org.w3c.dom.Text;
 
 import java.util.Random;
 
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.ImageView;
+
 public class Fragment3 extends Fragment {
 
     public static final Random RANDOM = new Random();
     private ImageView coinImageView;
     private Button flipButton;
     private TextView coinTextView;
+    private int coinSideCount;
+    private ImageView image1;
+    private ImageView image2;
+    private boolean isFirstImage = true;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment3_layout, container, false);
+        /*
         coinImageView = (ImageView) view.findViewById(R.id.coinImageView);
         flipButton = (Button) view.findViewById(R.id.flipButton);
         coinTextView = (TextView) view.findViewById(R.id.coinTextView);
@@ -39,16 +54,88 @@ public class Fragment3 extends Fragment {
         flipButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                flipCoin();
+                flipTheCoin();
             }
 
 
+        });
+
+         */
+
+
+
+        // new implementation starts here
+
+        image1 = (ImageView) view.findViewById(R.id.ImageView01);
+        image2 = (ImageView) view.findViewById(R.id.ImageView02);
+        image2.setVisibility(View.GONE);
+
+        image1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (RANDOM.nextFloat() >= 0.5f) {
+                    applyRotation(0, 450, true);
+                    isFirstImage = !isFirstImage;
+
+                } else {
+                    applyRotation(0, 450, false);
+                    isFirstImage = !isFirstImage;
+                }
+            }
         });
 
         return view;
 
 
 
+
+    }
+
+
+    private void applyRotation(float start, float end, boolean heads) {
+// Find the center of image
+        final float centerX = image1.getWidth() / 2.0f;
+        final float centerY = image1.getHeight() / 2.0f;
+
+// Create a new 3D rotation with the supplied parameter
+// The animation listener is used to trigger the next animation
+        final Flip3dAnimation rotation =
+                new Flip3dAnimation(start, end, centerX, centerY);
+        rotation.setDuration(200);
+        rotation.setFillAfter(true);
+        //rotation.setInterpolator(new AccelerateInterpolator());
+        rotation.setAnimationListener(new DisplayNextView(isFirstImage, image1, image2));
+
+        if (heads)
+        {
+            image1.startAnimation(rotation);
+        } else {
+            image2.startAnimation(rotation);
+        }
+
+
+
+    }
+
+
+
+    private void flipTheCoin(){
+        coinSideCount = RANDOM.nextInt(2);
+
+        RotateAnimation rotateAnimation = new RotateAnimation(0,36000,
+                RotateAnimation.RELATIVE_TO_SELF,0.5f,RotateAnimation.RELATIVE_TO_SELF,0.5f);
+
+        if(coinSideCount==0){
+            coinImageView.setImageResource(R.drawable.heads);
+            Toast.makeText(getActivity(),"Heads",Toast.LENGTH_SHORT).show();
+        }else if(coinSideCount==1){
+            coinImageView.setImageResource(R.drawable.tails);
+            Toast.makeText(getActivity(),"Tails",Toast.LENGTH_SHORT).show();
+        }
+
+
+
+        rotateAnimation.setDuration(1000);
+        coinImageView.startAnimation(rotateAnimation);
 
     }
 

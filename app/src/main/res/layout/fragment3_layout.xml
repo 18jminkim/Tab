@@ -20,6 +20,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <include android:id="@+id/notelist" layout="@layout/first_view" />
+    <include android:id="@+id/notelist" layout="@layout/second_view" />
+
+
+    <!--
     <ImageView
         android:id="@+id/coinImageView"
         android:layout_width="238dp"
@@ -40,5 +46,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coinImageView" />
+        -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

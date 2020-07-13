@@ -3,15 +3,19 @@ package com.example.tab;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -20,14 +24,31 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import  android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
+
+import java.nio.file.Files;
+import java.util.Date;
+
+import static android.app.Activity.RESULT_OK;
+import static android.os.Environment.getExternalStoragePublicDirectory;
+
 
 public class Fragment2 extends Fragment {
     private static final String TAG = "GalleryFragment";
@@ -35,16 +56,20 @@ public class Fragment2 extends Fragment {
 
     //constants
     private static final int NUM_GRID_COLUMNS = 3;
+    private static final int CAMERA_REQUEST_CODE = 5;
 
     //widgets
     private GridView gridView;
     private ImageView galleryImage;
     private ProgressBar mProgressBar;
     private Spinner directorySpinner;
+    private Button deleteButton;
+
 
     //vars
     private ArrayList<String> directories = new ArrayList<String>(); ;
     private String mAppend = "file:/";
+    private String pathToFile;
 
 
 
@@ -58,16 +83,92 @@ public class Fragment2 extends Fragment {
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mProgressBar.setVisibility(View.GONE);
         directories = new ArrayList<String>();
+        //deleteButton = (Button) view.findViewById(R.id.deleteButton); // instance of button class
         Log.d(TAG, "onCreateView: started.");
 
         //ImageView shareClose
 
         init();
 
+        FloatingActionButton btnLaunchCamera = view.findViewById(R.id.btnLaunchCamera);
+        btnLaunchCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                /*
+                Snackbar.make(view, "It's a trap :D", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                 */
+                Log.d(TAG, "onClick: launching camera.");
+
+                /*
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+
+                 */
+                dispatchPictureTakerAction();
+
+
+            }
+
+            private void dispatchPictureTakerAction(){
+                Intent takePic = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File photoFile = null;
+
+                photoFile = createPhotoFile();
+                if (photoFile != null) {
+                    pathToFile = photoFile.getAbsolutePath();
+                    Uri photoURI = FileProvider.getUriForFile(getActivity(), "com.thecodecity.cameraandroid.fileprovider", photoFile);
+                    takePic.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePic, 1);
+
+
+
+                }
+
+
+
+            }
+
+            private File createPhotoFile(){
+                String name = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                File image = null;
+                try {
+                    image = File.createTempFile(name, ".jpg", storageDir);
+                } catch (IOException e) {
+                    Log.d(TAG, "Excep : " +e.toString());
+                }
+                return image;
+            }
+
+
+        });
+
         return view;
     }
 
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK){
+            if (requestCode == 1){
+                Bitmap bitmap = BitmapFactory.decodeFile(pathToFile);
+
+            }
+
+            Log.d(TAG, "onActivityResult: done taking a photo.");
+            Log.d(TAG, "onActivityResult: attempting to return to gallery.");
+
+            //navigate back to our gallery.
+
+            init();
+        }
+    }
 
     private void init(){
         FilePaths filePaths = new FilePaths();
@@ -75,6 +176,12 @@ public class Fragment2 extends Fragment {
         if (FileSearch.getDirectoryPaths(filePaths.PICTURES) != null){
             directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
         }
+        if (FileSearch.getDirectoryPaths(filePaths.PICTURES) != null){
+            directories.add(filePaths.PICTURES);
+        }
+
+
+
 
         if (FileSearch.getDirectoryPaths(filePaths.DOWNLOAD) != null){
             directories.add(filePaths.DOWNLOAD);
@@ -102,6 +209,8 @@ public class Fragment2 extends Fragment {
             }
         });
         //check for other folders inside "/storage/emulated/0/pictures"
+
+
     }
 
 
@@ -140,8 +249,10 @@ public class Fragment2 extends Fragment {
 
     }
 
-    private void setImage(String imgURL, ImageView image, String append){
+    private void setImage(final String imgURL, ImageView image,final String append){
         Log.d(TAG, "setImage: setting Image");
+        Log.d(TAG, "setImage: " + imgURL);
+        Log.d(TAG, "setImage: " + append);
 
         ImageLoader imageLoader = ImageLoader.getInstance();
 
@@ -170,6 +281,65 @@ public class Fragment2 extends Fragment {
 
             }
         });
+
+
+
+        /* maybe: deleteButton?
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                this.deleteImage( imgURL,  append);
+            }
+
+            private void deleteImage(String imgURL, String append){
+                String file_dj_path = imgURL;
+                File fDelete = new File(imgURL);
+                if (fDelete.exists()){
+                    if (fDelete.delete()){
+                        Log.d(TAG, "file deleted: " + file_dj_path);
+                        //callBroadCast();
+                        init();
+                    } else {
+                        Log.d(TAG, "file not deleted: " + file_dj_path);
+                    }
+                } else {
+                    Log.d(TAG, "no such file: " + file_dj_path);
+                }
+
+            }
+
+         */
+
+
+            /*
+            private void callBroadCast(){
+                if (Build.VERSION.SDK_INT >= 15){
+                    Log.e("-->", " >= 15");
+                    MediaScannerConnection.scanFile(MainActivity.this, new String[]{Environment.getExternalStorageDirectory().toString()}, null,
+                            new MediaScannerConnection.OnScanCompletedListener() {
+                                @Override
+                                public void onScanCompleted(String path, Uri uri) {
+                                    Log.e("ExternalStorage", "Scanned " + path + ":");
+                                    Log.e("ExternalStorage", "-> uri=" + uri);
+                                }
+                            });
+                } else{
+                    Log.e("-->", " < 14");
+
+                }
+
+            }
+
+
+        });
+
+
+        Log.d(TAG, "setImage: button set");
+
+             */
+
+
     }
 
 
