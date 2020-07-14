@@ -34,6 +34,8 @@
                 android:resource="@xml/file_paths" />
 
         </provider>
+        <activity android:name=".ItemActivity"/>
+        <activity android:name=".AddActivity"/>
 
         
     </application>

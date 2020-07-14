@@ -14,7 +14,7 @@
 
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:text="Coin flip!"
+        android:text="No.1 Decision Maker"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

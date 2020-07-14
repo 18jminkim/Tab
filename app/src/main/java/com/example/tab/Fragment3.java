@@ -1,6 +1,8 @@
 package com.example.tab;
 
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,7 @@ public class Fragment3 extends Fragment {
     private ImageView image1;
     private ImageView image2;
     private boolean isFirstImage = true;
+    private static final String TAG = "CoinFlip";
 
 
     @Nullable
@@ -72,15 +75,26 @@ public class Fragment3 extends Fragment {
 
         image1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+
+                image1.setClickable(false);
+                //image2.setClickable(false);
                 if (RANDOM.nextFloat() >= 0.5f) {
-                    applyRotation(0, 450, true);
-                    isFirstImage = !isFirstImage;
+                    applyRotation(0, 450, true, isFirstImage);
+                    isFirstImage = true;
 
                 } else {
-                    applyRotation(0, 450, false);
-                    isFirstImage = !isFirstImage;
+                    applyRotation(0, 450, false, isFirstImage);
+                    isFirstImage = false;
                 }
+
+
+                image1.setClickable(true);
+                //image2.setClickable(true);
+
+
             }
+
+
         });
 
         return view;
@@ -91,7 +105,7 @@ public class Fragment3 extends Fragment {
     }
 
 
-    private void applyRotation(float start, float end, boolean heads) {
+    private void applyRotation(float start, float end, boolean heads, boolean isFirstImage) {
 // Find the center of image
         final float centerX = image1.getWidth() / 2.0f;
         final float centerY = image1.getHeight() / 2.0f;
@@ -100,17 +114,33 @@ public class Fragment3 extends Fragment {
 // The animation listener is used to trigger the next animation
         final Flip3dAnimation rotation =
                 new Flip3dAnimation(start, end, centerX, centerY);
-        rotation.setDuration(200);
+        rotation.setDuration(100);
         rotation.setFillAfter(true);
         //rotation.setInterpolator(new AccelerateInterpolator());
-        rotation.setAnimationListener(new DisplayNextView(isFirstImage, image1, image2));
-
-        if (heads)
+        rotation.setAnimationListener(new DisplayNextView(isFirstImage, image1, image2, heads));
+        if (isFirstImage)
         {
+            Log.d(TAG, "applyRotation: currently first image.");
             image1.startAnimation(rotation);
         } else {
+            Log.d(TAG, "applyRotation: currently second image.");
+
             image2.startAnimation(rotation);
         }
+        if (heads){
+            Toast.makeText(getActivity(),"Heads!",Toast.LENGTH_SHORT).show();
+            //image2.setVisibility(View.GONE);
+        } else {
+            Toast.makeText(getActivity(),"Tails!",Toast.LENGTH_SHORT).show();
+
+
+        }
+
+
+
+
+
+
 
 
 

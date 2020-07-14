@@ -6,13 +6,15 @@ import android.widget.ImageView;
 
 public final class SwapViews implements Runnable {
     private boolean mIsFirstView;
+    private boolean heads;
     ImageView image1;
     ImageView image2;
 
-    public SwapViews(boolean isFirstView, ImageView image1, ImageView image2) {
+    public SwapViews(boolean isFirstView, ImageView image1, ImageView image2, boolean heads) {
         mIsFirstView = isFirstView;
         this.image1 = image1;
         this.image2 = image2;
+        this.heads = heads;
     }
 
     public void run() {
@@ -20,25 +22,24 @@ public final class SwapViews implements Runnable {
         final float centerY = image1.getHeight() / 2.0f;
         Flip3dAnimation rotation;
 
-        if (mIsFirstView) {
+        if (!heads) {
             image1.setVisibility(View.GONE);
             image2.setVisibility(View.VISIBLE);
             //image2.requestFocus();
 
-            rotation = new Flip3dAnimation(-90, 0, centerX, centerY);
         } else {
             image2.setVisibility(View.GONE);
             image1.setVisibility(View.VISIBLE);
             //image1.requestFocus();
 
-            rotation = new Flip3dAnimation(-90, 0, centerX, centerY);
         }
+        rotation = new Flip3dAnimation(-900, 0, centerX, centerY);
 
         rotation.setDuration(200);
         rotation.setFillAfter(true);
-        //rotation.setInterpolator(new DecelerateInterpolator());
+        rotation.setInterpolator(new DecelerateInterpolator());
 
-        if (mIsFirstView) {
+        if (!heads) {
             image2.startAnimation(rotation);
         } else {
             image1.startAnimation(rotation);
