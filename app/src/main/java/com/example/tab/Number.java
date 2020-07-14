@@ -6,6 +6,11 @@ public class Number {
     private String name;
     private String num;
     private Drawable icon;
+    Number(){}
+    Number(String name, String num){
+        this.name = name;
+        this.num = num;
+    }
 
     public String getName(){
         return name;

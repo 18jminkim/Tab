@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,19 +18,42 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/search_name"
+                android:gravity="center"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="이름 검색"></EditText>
+                android:hint="search"></EditText>
 
-            <Button
+
+            <ImageButton
                 android:id="@+id/btn_search"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="검색"></Button>
+                android:layout_width="52dp"
+                android:layout_height="50dp"
+                android:background="@drawable/search"
+                android:gravity="center"
+                android:padding="20dp">
+            </ImageButton>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"></View>
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:id="@+id/add_btn"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:padding="5dp"
+                android:src="@drawable/plus"
+                />
 
 
         </LinearLayout>
