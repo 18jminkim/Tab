@@ -1,40 +1,42 @@
 package com.example.tab;
-        import android.app.Activity;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.text.Editable;
-        import android.text.TextWatcher;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.Button;
-        import android.widget.EditText;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.EditText;
 
-        import androidx.annotation.NonNull;
-        import androidx.annotation.Nullable;
-        import androidx.fragment.app.Fragment;
-        import androidx.recyclerview.widget.LinearLayoutManager;
-        import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-        import org.json.JSONArray;
-        import org.json.JSONException;
-        import org.json.JSONObject;
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
-        import static android.app.Activity.RESULT_OK;
+import static android.app.Activity.RESULT_OK;
 
 public class Fragment1 extends Fragment implements TextWatcher {
     public static Context context;
-    ArrayList<Number> number_list;
-    final RecyclerAdapter adapter = new RecyclerAdapter();
+    ArrayList<Number> number_list = new ArrayList<Number>();
+    RecyclerAdapter adapter = new RecyclerAdapter();
+    ArrayList<Number> add_list = new ArrayList<>();
     FloatingActionButton btn_add;
     EditText editText;
-
+    int flag = 0;
     RecyclerView recyclerView;
 
 
@@ -43,7 +45,7 @@ public class Fragment1 extends Fragment implements TextWatcher {
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment1_layout, container, false);
 
-       // MenuInflater inflater
+        // MenuInflater inflater
 
         //adapter contact list
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
@@ -52,17 +54,28 @@ public class Fragment1 extends Fragment implements TextWatcher {
         recyclerView.setHasFixedSize(false);
         recyclerView.setAdapter(adapter);
 
-        jsonParsing(getJsonString());
-        for(int i=0; i<number_list.size(); i++){
-            adapter.addItem(number_list.get(i));
+        if(flag == 0) {
+            jsonParsing(getJsonString());
+            for(int i=0; i<number_list.size(); i++){
+                adapter.addItem(number_list.get(i));
+            }
+            adapter.notifyDataSetChanged();
+            flag = 1;
         }
-        adapter.notifyDataSetChanged();
+        else{
+            adapter = new RecyclerAdapter();
+            for(int i=0; i<number_list.size(); i++){
+                adapter.addItem(number_list.get(i));
+            }
+            for(int i=0; i<add_list.size();i++){
+                adapter.addItem(add_list.get(i));
+            }
+            adapter.notifyDataSetChanged();
+        }
 
 
         editText = (EditText)view.findViewById(R.id.search_name);
         editText.addTextChangedListener(this);
-
-
         btn_add = view.findViewById(R.id.add_btn);
         btn_add.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View view){
@@ -91,10 +104,9 @@ public class Fragment1 extends Fragment implements TextWatcher {
     }
 
     public void add_item(Number data){
-        number_list.add(data);
+        //number_list.add(data);
+        add_list.add(data);
         adapter.addItem(data);
-        System.out.println(number_list.get(number_list.size()-1).getName());
-        System.out.println(number_list.get(number_list.size()-1).getNum());
         adapter.notifyDataSetChanged();
     }
 
