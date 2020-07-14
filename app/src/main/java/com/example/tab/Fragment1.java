@@ -1,10 +1,8 @@
 package com.example.tab;
         import android.app.Activity;
-        import android.app.Instrumentation;
         import android.content.Context;
         import android.content.Intent;
         import android.os.Bundle;
-        import android.provider.ContactsContract;
         import android.text.Editable;
         import android.text.TextWatcher;
         import android.view.LayoutInflater;
@@ -12,7 +10,6 @@ package com.example.tab;
         import android.view.ViewGroup;
         import android.widget.Button;
         import android.widget.EditText;
-        import android.widget.ImageButton;
 
         import androidx.annotation.NonNull;
         import androidx.annotation.Nullable;
@@ -39,8 +36,7 @@ public class Fragment1 extends Fragment implements TextWatcher {
     EditText editText;
 
     RecyclerView recyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
-    RecyclerView.Adapter mAdapter;
+
 
     @Nullable
     @Override
@@ -63,10 +59,8 @@ public class Fragment1 extends Fragment implements TextWatcher {
         adapter.notifyDataSetChanged();
 
 
-
         editText = (EditText)view.findViewById(R.id.search_name);
         editText.addTextChangedListener(this);
-
 
 
         btn_add = view.findViewById(R.id.add_btn);
