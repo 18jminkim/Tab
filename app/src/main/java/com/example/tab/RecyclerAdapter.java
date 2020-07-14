@@ -21,7 +21,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
     // adapter에 들어갈 list 입니다.
     private ArrayList<Number> listData = new ArrayList<>();
-    Context context;
     ArrayList<Number> unFilteredlist = new ArrayList<>();
 
 
@@ -53,9 +52,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         unFilteredlist.add(data);
     }
 
-    public void onClick(){
-
-    }
 
     public Filter getFilter() {
         return new Filter() {

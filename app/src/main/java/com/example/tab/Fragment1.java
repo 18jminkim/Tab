@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -26,15 +27,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import static android.app.Activity.RESULT_OK;
-
 public class Fragment1 extends Fragment implements TextWatcher {
-    public static Context context;
-    ArrayList<Number> number_list;
-    final RecyclerAdapter adapter = new RecyclerAdapter();
+    ArrayList<Number> number_list = new ArrayList<Number>();
+    RecyclerAdapter adapter = new RecyclerAdapter();
+    ArrayList<Number> add_list = new ArrayList<>();
     FloatingActionButton btn_add;
     EditText editText;
-
+    int flag = 0;
     RecyclerView recyclerView;
 
 
@@ -42,8 +41,6 @@ public class Fragment1 extends Fragment implements TextWatcher {
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment1_layout, container, false);
-
-
 
         // MenuInflater inflater
 
@@ -54,17 +51,19 @@ public class Fragment1 extends Fragment implements TextWatcher {
         recyclerView.setHasFixedSize(false);
         recyclerView.setAdapter(adapter);
 
-        jsonParsing(getJsonString());
-        for(int i=0; i<number_list.size(); i++){
-            adapter.addItem(number_list.get(i));
+        if(flag == 0) {
+            jsonParsing(getJsonString());
+            for(int i=0; i<number_list.size(); i++){
+                //add_list.add(number_list.get(i));
+                adapter.addItem(number_list.get(i));
+            }
+            adapter.notifyDataSetChanged();
+            flag = 1;
         }
-        adapter.notifyDataSetChanged();
 
 
         editText = (EditText)view.findViewById(R.id.search_name);
         editText.addTextChangedListener(this);
-
-
         btn_add = view.findViewById(R.id.add_btn);
         btn_add.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View view){
@@ -77,6 +76,7 @@ public class Fragment1 extends Fragment implements TextWatcher {
 
         return view;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -93,10 +93,9 @@ public class Fragment1 extends Fragment implements TextWatcher {
     }
 
     public void add_item(Number data){
-        number_list.add(data);
+        //number_list.add(data);
+        add_list.add(data);
         adapter.addItem(data);
-        System.out.println(number_list.get(number_list.size()-1).getName());
-        System.out.println(number_list.get(number_list.size()-1).getNum());
         adapter.notifyDataSetChanged();
     }
 

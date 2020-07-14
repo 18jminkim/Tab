@@ -33,6 +33,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -278,11 +279,17 @@ public class Fragment2 extends Fragment {
         Log.d(TAG, "setImage: " + imgURL);
         Log.d(TAG, "setImage: " + append);
 
+
+        DisplayImageOptions GALLERY = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .considerExifParams(true)
+                .build();
+
         ImageLoader imageLoader = ImageLoader.getInstance();
 
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
-        imageLoader.displayImage(append + imgURL, image, new ImageLoadingListener() {
+        imageLoader.displayImage(append + imgURL, image,GALLERY, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 mProgressBar.setVisibility(View.VISIBLE);
