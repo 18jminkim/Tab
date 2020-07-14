@@ -52,9 +52,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         unFilteredlist.add(data);
     }
 
-    public void onClick(){
-
-    }
 
     public Filter getFilter() {
         return new Filter() {
@@ -116,7 +113,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     if(pos != RecyclerView.NO_POSITION){
                         listData.remove(pos);
                         unFilteredlist.remove(pos);
-
                         notifyDataSetChanged();
                     }
 

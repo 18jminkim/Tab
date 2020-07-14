@@ -27,10 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import static android.app.Activity.RESULT_OK;
-
 public class Fragment1 extends Fragment implements TextWatcher {
-    public static Context context;
     ArrayList<Number> number_list = new ArrayList<Number>();
     RecyclerAdapter adapter = new RecyclerAdapter();
     ArrayList<Number> add_list = new ArrayList<>();
@@ -57,20 +54,11 @@ public class Fragment1 extends Fragment implements TextWatcher {
         if(flag == 0) {
             jsonParsing(getJsonString());
             for(int i=0; i<number_list.size(); i++){
+                //add_list.add(number_list.get(i));
                 adapter.addItem(number_list.get(i));
             }
             adapter.notifyDataSetChanged();
             flag = 1;
-        }
-        else{
-            adapter = new RecyclerAdapter();
-            for(int i=0; i<number_list.size(); i++){
-                adapter.addItem(number_list.get(i));
-            }
-            for(int i=0; i<add_list.size();i++){
-                adapter.addItem(add_list.get(i));
-            }
-            adapter.notifyDataSetChanged();
         }
 
 
@@ -88,6 +76,7 @@ public class Fragment1 extends Fragment implements TextWatcher {
 
         return view;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
