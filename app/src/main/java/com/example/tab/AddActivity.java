@@ -1,5 +1,6 @@
 package com.example.tab;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,8 +23,6 @@ public class AddActivity extends AppCompatActivity {
 
         setContentView(R.layout.item_insert);
 
-        final EditText tx1 = findViewById(R.id.textView1);
-        final EditText tx2 = findViewById(R.id.textView2);
         add_btn = findViewById(R.id.add_btn);
         final Intent intent = getIntent(); /*데이터 수신*/
         extra = new Bundle();
@@ -33,20 +32,33 @@ public class AddActivity extends AppCompatActivity {
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Number data = new Number(tx1.getText().toString(),tx2.getText().toString());
-                result.putExtra("name",tx1.getText().toString());
-                result.putExtra("number",tx2.getText().toString());
-                setResult(RESULT_OK, result);
 
+                finish();
 
                 //((Fragment1)((MainActivity)MainActivity.context).getSupportFragmentManager().findFragmentByTag("Fragment1")).add_item(data);
                 //((Fragment1)Fragment1.context).add_item(data);
         //                ((Fragment1)getSupportFragmentManager().findFragmentByTag("Fragment1")).add_item(data);
             }
         });
+    }
 
-
-
+    public void finish(){
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        EditText tx1 = findViewById(R.id.textView1);
+        EditText tx2 = findViewById(R.id.textView2);
+        String name = tx1.getText().toString();
+        String number = tx2.getText().toString();
+        if(!(name.isEmpty())){
+            bundle.putString("name",name);
+            bundle.putString("number",number);
+            intent.putExtras(bundle);
+            setResult(Activity.RESULT_OK,intent);
+        }
+        else{
+            setResult(Activity.RESULT_CANCELED,intent);
+        }
+        super.finish();
     }
 
 }

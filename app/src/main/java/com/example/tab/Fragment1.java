@@ -1,4 +1,5 @@
 package com.example.tab;
+        import android.app.Activity;
         import android.app.Instrumentation;
         import android.content.Context;
         import android.content.Intent;
@@ -18,6 +19,9 @@ package com.example.tab;
         import androidx.fragment.app.Fragment;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
+
+        import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
         import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
@@ -30,11 +34,8 @@ package com.example.tab;
 public class Fragment1 extends Fragment implements TextWatcher {
     public static Context context;
     ArrayList<Number> number_list;
-    RecyclerView listview;
-    EditText editText_name,editText_num;
     final RecyclerAdapter adapter = new RecyclerAdapter();
-    Button btn_1,btn_search;
-    ImageButton btn_add;
+    FloatingActionButton btn_add;
     EditText editText;
 
     RecyclerView recyclerView;
@@ -61,22 +62,7 @@ public class Fragment1 extends Fragment implements TextWatcher {
         }
         adapter.notifyDataSetChanged();
 
-        //name input
-       /*
-        editText_name = (EditText)view.findViewById(R.id.insert_name);
-        editText_num = (EditText)view.findViewById(R.id.insert_num);
-        btn_1 = (Button)view.findViewById(R.id.send);
-        btn_1.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View view){
-                Number data = new Number();
-                data.setName(editText_name.getText().toString());
-                data.setNum(editText_num.getText().toString());
-                number_list.add(data);
-                adapter.addItem(data);
-                adapter.notifyDataSetChanged();
-            }
-        });
-        */
+
 
         editText = (EditText)view.findViewById(R.id.search_name);
         editText.addTextChangedListener(this);
@@ -87,14 +73,7 @@ public class Fragment1 extends Fragment implements TextWatcher {
         btn_add.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View view){
                 Intent intent = new Intent(getActivity(), AddActivity.class);
-                getActivity().startActivityForResult(intent,3000);
-                Number data = new Number();
-                data.setName(intent.getStringExtra("name"));
-                System.out.println(data.getName());
-                data.setNum(intent.getStringExtra("number"));
-                number_list.add(data);
-                adapter.addItem(data);
-                adapter.notifyDataSetChanged();
+                startActivityForResult(intent,3000);
             }
         });
 
@@ -105,7 +84,8 @@ public class Fragment1 extends Fragment implements TextWatcher {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK){
+        System.out.println("get result");
+        if(resultCode == Activity.RESULT_OK){
             switch (requestCode){
                 // MainActivity 에서 요청할 때 보낸 요청 코드 (3000)
                 case 3000:
@@ -113,17 +93,19 @@ public class Fragment1 extends Fragment implements TextWatcher {
                     break;
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void add_item(Number data){
         number_list.add(data);
         adapter.addItem(data);
+        System.out.println(number_list.get(number_list.size()-1).getName());
+        System.out.println(number_list.get(number_list.size()-1).getNum());
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
     }
 
     @Override

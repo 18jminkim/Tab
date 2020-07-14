@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,90 +8,57 @@
     android:layout_height="match_parent">
 
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/search_name"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.417"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.037"></EditText>
+
+    <ImageButton
+        android:id="@+id/btn_search"
+        android:layout_width="52dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="224dp"
+        android:layout_marginLeft="224dp"
+        android:background="@drawable/search"
+        android:padding="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/search_name"
+        app:layout_constraintStart_toStartOf="@+id/search_name"
+        app:layout_constraintTop_toTopOf="@+id/search_name"
+        app:layout_constraintVertical_bias="1.0"></ImageButton>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="wrap_content"
+        android:background="#F0F0F0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_name"
+        app:layout_constraintVertical_bias="0.109" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/search_name"
-                android:gravity="center"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:hint="search"></EditText>
-
-
-            <ImageButton
-                android:id="@+id/btn_search"
-                android:layout_width="52dp"
-                android:layout_height="50dp"
-                android:background="@drawable/search"
-                android:gravity="center"
-                android:padding="20dp">
-            </ImageButton>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"></View>
-
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:id="@+id/add_btn"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:padding="5dp"
-                android:src="@drawable/plus"
-                />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_btn"
+        android:layout_width="56dp"
+        android:layout_height="69dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/plus"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.878"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.921" />
 
 
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/insert_name"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:hint="이름" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/insert_num"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:hint="번호" />
-
-            <Button
-                android:id="@+id/send"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="입력" />
-
-        </LinearLayout>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F0F0F0"
-            />
-
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
