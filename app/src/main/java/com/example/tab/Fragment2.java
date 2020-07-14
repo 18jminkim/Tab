@@ -87,9 +87,6 @@ public class Fragment2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-
-            //Toast.makeText(MainActivity.this, "You have already granted this permission!",
-            // Toast.LENGTH_SHORT).show();
         } else {
             requestStorageWritePermission();
         }
@@ -97,11 +94,6 @@ public class Fragment2 extends Fragment {
 
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-
-            /*
-            Toast.makeText(MainActivity.this, "You have already granted this permission!",
-                    Toast.LENGTH_SHORT).show();
-             */
         } else {
             requestCameraPermission();
         }
