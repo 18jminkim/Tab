@@ -1,4 +1,4 @@
-Project: The 3-tab project
+# Project: The 3-tab project
 
 Members: 황소진, 김재민
 
